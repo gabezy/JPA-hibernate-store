@@ -6,35 +6,35 @@ import javax.persistence.*;
 @Table(name = "categories")
 public class Category {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String name;
+    @EmbeddedId
+    private CategoryId id;
 
     public Category(String name) {
-        this.name = name;
+        this.id = new CategoryId(name, "xpto");
     }
 
     public Category() {}
 
     public String getName() {
-        return name;
+        return id.getName();
     }
 
     public void setName(String name) {
-        this.name = name;
+        id.setName(name);
     }
 
-    public long getId() {
+    public CategoryId getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(CategoryId id) {
         this.id = id;
     }
 
     @Override
     public String toString() {
-        return String.format("id: %d - name: %s", this.id, this.name);
+        return "Category{" +
+                "id=" + id +
+                '}';
     }
 }

@@ -21,3 +21,6 @@ GenerationType.SEQUENCE: This strategy generates primary key values using a data
 GenerationType.TABLE: This strategy generates primary key values using a separate table in the database. This is a portable strategy that can be used with any database.
 
 For example, if you want to use the IDENTITY strategy to generate primary keys, you can use the @GeneratedValue(strategy = GenerationType.IDENTITY) annotation on the primary key field of your entity.
+<br>
+<br>
+#### by default all toOne relationship is Eager, so always load and join the field, even if isn't necessary

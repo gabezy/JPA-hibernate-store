@@ -3,16 +3,36 @@ package br.com.storeJPA.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "orders")
-public class Orders {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "total_value")
+    private BigDecimal totalValue = BigDecimal.ZERO;
+    @Column(name = "order_at")
     private LocalDateTime orderAt = LocalDateTime.now();
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Client client;
-    private BigDecimal totalValue;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<ItemOrder> items = new ArrayList<>();
+
+    public Order(){}
+
+    public Order(Client client) {
+        this.client = client;
+    }
+    public void addItem(ItemOrder item) {
+        item.setOrder(this);
+        this.items.add(item);
+        this.totalValue = this.totalValue.add(item.getTotalItemOrderValue());
+    }
 
 
     public long getId() {
@@ -45,5 +65,9 @@ public class Orders {
 
     public void setTotalValue(BigDecimal totalValue) {
         this.totalValue = totalValue;
+    }
+
+    public List<ItemOrder> getItems() {
+        return items;
     }
 }

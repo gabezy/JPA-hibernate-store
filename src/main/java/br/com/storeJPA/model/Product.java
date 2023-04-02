@@ -5,7 +5,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity // tell JPA that this class is an entity(Table)
-@Table(name = "products") // pass a different name to the table
+@Table(name = "products") // passing a different name to the table
+@NamedQuery(
+        name = "Product.productsByCategory",
+        query = "SELECT p FROM Product p WHERE p.category.name = :category"
+)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //
@@ -13,10 +18,12 @@ public class Product {
     private String name;
     private String description;
     private BigDecimal price;
-    private LocalDateTime createadAt = LocalDateTime.now();
-    private LocalDateTime updateAt;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
-    @ManyToOne  //Categorization
+    @ManyToOne(fetch = FetchType.LAZY)  //Categorization
     private Category category;
 
 
@@ -61,20 +68,20 @@ public class Product {
         this.price = price;
     }
 
-    public LocalDateTime getCreateadAt() {
-        return createadAt;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateadAt(LocalDateTime createadAt) {
-        this.createadAt = createadAt;
+    public void setCreatedAt(LocalDateTime createadAt) {
+        this.createdAt = createadAt;
     }
 
-    public LocalDateTime getUpdateAt() {
-        return updateAt;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdateAt(LocalDateTime updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdatedAt(LocalDateTime updateAt) {
+        this.updatedAt = updateAt;
     }
 
     public Category getCategory() {

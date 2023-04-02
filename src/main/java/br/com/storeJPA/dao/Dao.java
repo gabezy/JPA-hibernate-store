@@ -1,5 +1,6 @@
 package br.com.storeJPA.dao;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface Dao<T> {
